@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: testlink_pgadmin
+    ports:
+      - 8086:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: SuperSecret
+    

@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+
+  tl_code:
+    build:
+      context: ./code
+      args:
+        - TL_RELEASE=${TL_RELEASE}
+        - TL_VERSION=${TL_VERSION}
+        - TL_DOWNLOAD_BASE=${TL_DOWNLOAD_BASE}
+        - TL_DOWNLOAD_FILE=${TL_DOWNLOAD_FILE}
+    image:  lczub/testlink_code:${TL_RELEASE}
+    container_name: testlink_code
+
+  tl_pg:
+    depends_on:
+     - tl_code
+    build:
+      context: ./db
+      args:
+        - TL_RELEASE=${TL_RELEASE}
+        - TL_VERSION=${TL_VERSION}
+        - TL_PG_VERSION=${TL_PG_VERSION}
+   
+  tl_apache:
+    depends_on:
+      - tl_pg
+    build:
+      context: ./webapp
+      args:
+        - TL_RELEASE=${TL_RELEASE}
+        - TL_VERSION=${TL_VERSION}
+        - TL_PHP_VERSION=${TL_PHP_VERSION}
+
