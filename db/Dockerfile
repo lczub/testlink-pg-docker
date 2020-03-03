@@ -1,11 +1,11 @@
-ARG TL_RELEASE
-ARG TL_PG_VERSION
+ARG tl_release
+ARG tl_pg_version
 
 #############################
-FROM lczub/testlink_code:${TL_RELEASE} as tl_code
+FROM lczub/testlink_code:${tl_release} as tl_code
 
-ARG TL_RELEASE
-WORKDIR /var/testlink-code-${TL_RELEASE}/install/sql/postgres
+ARG tl_release
+WORKDIR /var/testlink-code-${tl_release}/install/sql/postgres
 COPY scripts/fixing_testling_pg_install.sh ./
 RUN \
   mv testlink_create_tables.sql 10-testlink_create_tables.sql && \
@@ -14,11 +14,11 @@ RUN \
   ./fixing_testling_pg_install.sh
 
 #############################
-FROM postgres:${TL_PG_VERSION} as pg_testlink_base
+FROM postgres:${tl_pg_version} as pg_testlink_base
 
-ARG TL_RELEASE
-ARG TL_VERSION
-ENV TL_RELEASE=$TL_RELEASE
-ENV TL_VERSION=$TL_VERSION
+ARG tl_release
+ARG tl_version
+ENV TL_RELEASE=$tl_release
+ENV TL_VERSION=$tl_version
 WORKDIR /docker-entrypoint-initdb.d
-COPY --from=tl_code /var/testlink-code-${TL_RELEASE}/install/sql/postgres/*.sql ./
+COPY --from=tl_code /var/testlink-code-${tl_release}/install/sql/postgres/*.sql ./

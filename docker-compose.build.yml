@@ -6,10 +6,10 @@ services:
     build:
       context: ./code
       args:
-        - TL_RELEASE=${TL_RELEASE}
-        - TL_VERSION=${TL_VERSION}
-        - TL_DOWNLOAD_BASE=${TL_DOWNLOAD_BASE}
-        - TL_DOWNLOAD_FILE=${TL_DOWNLOAD_FILE}
+        - tl_release=${TL_RELEASE}
+        - tl_version=${TL_VERSION}
+        - tl_download_base=${TL_DOWNLOAD_BASE}
+        - tl_download_file=${TL_DOWNLOAD_FILE}
     image:  lczub/testlink_code:${TL_RELEASE}
     container_name: testlink_code
 
@@ -19,9 +19,9 @@ services:
     build:
       context: ./db
       args:
-        - TL_RELEASE=${TL_RELEASE}
-        - TL_VERSION=${TL_VERSION}
-        - TL_PG_VERSION=${TL_PG_VERSION}
+        - tl_release=${TL_RELEASE}
+        - tl_version=${TL_VERSION}
+        - tl_pg_version=${TL_PG_VERSION}
    
   tl_apache:
     depends_on:
@@ -29,7 +29,7 @@ services:
     build:
       context: ./webapp
       args:
-        - TL_RELEASE=${TL_RELEASE}
-        - TL_VERSION=${TL_VERSION}
-        - TL_PHP_VERSION=${TL_PHP_VERSION}
+        - tl_release=${TL_RELEASE}
+        - tl_version=${TL_VERSION}
+        - tl_php_version=${TL_PHP_VERSION}
 

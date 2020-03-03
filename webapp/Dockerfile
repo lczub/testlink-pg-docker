@@ -1,16 +1,16 @@
-ARG TL_RELEASE
-ARG TL_PHP_VERSION
+ARG tl_release
+ARG tl_php_version
 
 #############################
-FROM lczub/testlink_code:${TL_RELEASE} as tl_code
+FROM lczub/testlink_code:${tl_release} as tl_code
 
 #############################
-FROM php:${TL_PHP_VERSION}-apache as tl_php_base
+FROM php:${tl_php_version}-apache as tl_php_base
 
-ARG TL_RELEASE
-ARG TL_VERSION
-ENV TL_RELEASE=$TL_RELEASE
-ENV TL_VERSION=$TL_VERSION
+ARG tl_release
+ARG tl_version
+ENV TL_RELEASE=$tl_release
+ENV TL_VERSION=$tl_version
 RUN apt-get update && \
     apt-get install -y libpq-dev && \
 	docker-php-ext-install pgsql
@@ -26,7 +26,7 @@ COPY scripts/*.sh /var/testlink/scripts
 WORKDIR /var/testlink/scripts
 CMD ./create_php_db_config_file.sh && apache2-foreground
   
-COPY --from=tl_code --chown=www-data:www-data /var/testlink-code-${TL_RELEASE}  /var/www/html  
+COPY --from=tl_code --chown=www-data:www-data /var/testlink-code-${tl_release}  /var/www/html  
 RUN \
   chmod 777 -R /var/www/html/gui/templates_c 
 
