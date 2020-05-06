@@ -1,0 +1,9 @@
+
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto
+
+# Declare files that will always have LF line endings on checkout.
+*.sh text eol=lf
+
+# source 
+# https://help.github.com/en/github/using-git/configuring-git-to-handle-line-endings#per-repository-settings
