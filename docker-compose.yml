@@ -12,6 +12,13 @@ services:
     volumes:
       - tl-pg-volume:/var/lib/postgresql/data
 
+  tl_smtp:
+    image:  mailhog/mailhog
+    container_name: testlink_smtp_${TL_RELEASE}
+    ports:
+      - ${TL_SMTP_PORT_MH_SMTP_SERVER}:1025
+      - ${TL_SMTP_PORT_MH_HTTP_SERVER}:8025
+
   tl_apache:
     depends_on:
       - tl_pg

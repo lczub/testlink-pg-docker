@@ -21,14 +21,12 @@ Known issue: TestLink login failed with internal server error (not yet analysed)
  STATEMENT:  SELECT d.adnum as num, d.adsrc as def from pg_attrdef d, pg_class c where d.adrelid=c.oid and c.relname='users' order by d.adnum
 ```
 
-## Build and Run TestLink 1.9.20
-Source: [TestLink Release Tag _1.9.20_](https://github.com/TestLinkOpenSourceTRMS/testlink-code/releases/tag/1.9.20)
+## Build and Run TestLink 2.0.0.dev
+Source: [TestLink Release Branch _2.0.0-20200601-01_](https://github.com/TestLinkOpenSourceTRMS/testlink-code/tree/2.0.0-20200601-01)
 ```
-docker-compose --env-file ./envs/testlink-1.9.20.env -f docker-compose.yml -f docker-compose.build.yml build
-docker-compose --env-file ./envs/testlink-1.9.20.env -f docker-compose.yml up -d
+docker-compose --env-file ./envs/testlink-2.0.0.dev.env -f docker-compose.yml -f docker-compose.build.yml build
+docker-compose --env-file ./envs/testlink-2.0.0.dev.env -f docker-compose.yml up -d
 ```
-
-Known issue: starting container *testlink_pg* aborts with known TL 1.9.20 PG installation issue [TL Mantis 8874](http://mantis.testlink.org/view.php?id=8874) 
 
 ## Build and Run TestLink 1.9.19
 Source: [TestLink Release Tag _1.9.19_](https://github.com/TestLinkOpenSourceTRMS/testlink-code/releases/tag/1.9.19)
@@ -43,7 +41,7 @@ pgadmin will be reachable on [localhost port 8086](http://localhost:8086) with c
 TL PG Server connection parameter are: host *tl_pg* user *tlink* password *tlink*
 ```
 docker-compose --env-file ./envs/testlink-1.9.20.fixed.env -f docker-compose.yml  -f ./docker-compose.pgadmin.yml up -d pgadmin
-docker-compose --env-file ./envs/testlink-1.9.20.env -f docker-compose.yml  -f ./docker-compose.pgadmin.yml up -d pgadmin
+docker-compose --env-file ./envs/testlink-2.0.0.dev.env -f docker-compose.yml  -f ./docker-compose.pgadmin.yml up -d pgadmin
 docker-compose --env-file ./envs/testlink-1.9.19.env -f docker-compose.yml  -f ./docker-compose.pgadmin.yml up -d pgadmin
 
 ```
