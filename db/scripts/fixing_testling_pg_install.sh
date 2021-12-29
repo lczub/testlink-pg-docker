@@ -20,16 +20,16 @@ fix_create_tables_1920 (){
 	sed -i 's/being_exec_ts/begin_exec_ts/' $1
 	echo rename baseline_l1l2_context index in $1
 	sed -i 's/udx1 ON/udx1_context ON/' $1
-	echo rename baseline_l1l2_* indexes in $1
-	sed -i 's/udx1 ON/udx2 ON/' $1
-	sed -i 's/udx1/udx1_details/' $1
-	sed -i 's/udx2/udx1_context/' $1
+	echo rename baseline_l1l2_details indexes in $1
+	sed -i 's/udx1 /udx1_details /' $1
 }
 
 
 if [ "${TL_RELEASE}" = "1.9.19" ]; then 
 	replace_none_sql_comments "${THIS_INSTALL_DIR}/20-testlink_create_udf0.sql"
 elif [ "${TL_RELEASE}" = "1.9.20" ]; then 
+	fix_create_tables_1920  "${THIS_INSTALL_DIR}/10-testlink_create_tables.sql"
+elif [ "${TL_RELEASE}" = "2.0.0.dev" ]; then 
 	fix_create_tables_1920  "${THIS_INSTALL_DIR}/10-testlink_create_tables.sql"
 fi
 
