@@ -5,6 +5,14 @@ services:
   tl_pg:
     image:  lczub/testlink_pg:${TL_PG_VERSION}-${TL_RELEASE}
     container_name: testlink_pg_${TL_RELEASE}
+    build:
+      context: ./db
+      args:
+        - tl_release=${TL_RELEASE}
+        - tl_version=${TL_VERSION}
+        - tl_pg_version=${TL_PG_VERSION}
+        - tl_download_base=${TL_DOWNLOAD_BASE}
+        - tl_download_file=${TL_DOWNLOAD_FILE}
     environment:
       POSTGRES_PASSWORD: ${TL_DB_USER}
       POSTGRES_USER: ${TL_DB_PASSWORD}
@@ -13,7 +21,7 @@ services:
       - tl-pg-volume:/var/lib/postgresql/data
 
   tl_smtp:
-    image:  mailhog/mailhog
+    image:  docker.io/mailhog/mailhog
     container_name: testlink_smtp_${TL_RELEASE}
     ports:
       - ${TL_SMTP_PORT_MH_SMTP_SERVER}:1025
@@ -24,6 +32,14 @@ services:
       - tl_pg
     image:  lczub/testlink_apache_php:${TL_PHP_VERSION}-${TL_RELEASE}
     container_name: testlink_apache_${TL_RELEASE}
+    build:
+      context: ./webapp
+      args:
+        - tl_release=${TL_RELEASE}
+        - tl_version=${TL_VERSION}
+        - tl_php_version=${TL_PHP_VERSION}
+        - tl_download_base=${TL_DOWNLOAD_BASE}
+        - tl_download_file=${TL_DOWNLOAD_FILE}
     environment:
       TL_DB_USER: ${TL_DB_USER}
       TL_DB_PASSWORD: ${TL_DB_PASSWORD}
@@ -33,6 +49,15 @@ services:
       - tl-data-volume:/var/testlink
     ports:
       - ${TL_APACHE_PORT}:80
+
+  pgadmin:
+    image: docker.io/dpage/pgadmin4
+    container_name: testlink_pgadmin_${TL_RELEASE}
+    ports:
+      - ${TL_PGADMIN_PORT}:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: SuperSecret      
       
 volumes:
   tl-data-volume:

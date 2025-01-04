@@ -25,13 +25,15 @@ fix_create_tables_1920 (){
 }
 
 
+echo start fixing TL ${TL_RELEASE} PG installation scripts in ${THIS_INSTALL_DIR}...
 if [ "${TL_RELEASE}" = "1.9.19" ]; then 
 	replace_none_sql_comments "${THIS_INSTALL_DIR}/20-testlink_create_udf0.sql"
-elif [ "${TL_RELEASE}" = "1.9.20" ]; then 
+elif [ "${TL_RELEASE}" = "1.9.20.fixed" ]; then 
 	fix_create_tables_1920  "${THIS_INSTALL_DIR}/10-testlink_create_tables.sql"
 elif [ "${TL_RELEASE}" = "2.0.0.dev" ]; then 
 	fix_create_tables_1920  "${THIS_INSTALL_DIR}/10-testlink_create_tables.sql"
 fi
+echo end fixing TL ${TL_RELEASE} PG installation scripts
 
 exit 0
 

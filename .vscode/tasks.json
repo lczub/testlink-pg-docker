@@ -1,0 +1,137 @@
+{
+    // build TL images and start/stop TL containers using podman compose
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "echo",
+            "type": "shell",
+            "command": "echo ${workspaceFolder}"
+        },
+        {
+            "label": "remove image tl_pg",
+            "type": "shell",
+            "command": "podman images --filter reference=testlink_pg:*${input:envVariationTL}* --format \"table {{.ID}}\" | tail -n +2 | while read line; do podman rmi --force --ignore $line; done",
+            "group": "build",
+            "presentation": {
+                "clear": true,
+                "panel": "dedicated"
+            }
+        },
+        {
+            "label": "build image tl_pg",
+            "dependsOn" : ["remove image tl_pg"],
+            "dependsOrder": "sequence",
+            "type": "shell",
+            "command": "podman compose --env-file ./envs/testlink-${input:envVariationTL}.env -f docker-compose.yml build tl_pg",
+            "group": "build",
+            "presentation": {
+                "clear": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": {
+                "owner": "docker",
+                "source": "compose",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern": {
+                    "regexp": "^(Warning|Error):\\s+(.*)$",
+                    "severity": 1,
+                    "message": 2 
+                    }
+            }
+        },
+        {
+            "label": "remove image tl_apache",
+            "type": "shell",
+            "command": "podman images --filter reference=testlink_apache_php:*${input:envVariationTL}* --format \"table {{.ID}}\" | tail -n +2 | while read line; do podman rmi --force --ignore $line; done",
+            "group": "build",
+            "presentation": {
+                "clear": true,
+                "panel": "dedicated"
+            }
+        },
+        {
+            "label": "build image tl_apache",
+            "dependsOn" : ["remove image tl_apache"],
+            "dependsOrder": "sequence",
+            "type": "shell",
+            "command": "podman compose --env-file ./envs/testlink-${input:envVariationTL}.env -f docker-compose.yml build tl_apache",
+            "group": "build",
+            "presentation": {
+                "clear": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": {
+                "owner": "dockerfile",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "source": "compose",
+                "pattern": 
+                    {
+                    "regexp": "^(Warning|Error):\\s+(.*)$",
+                    "severity": 1,
+                    "message": 2
+                    }
+            }
+        },
+        {
+            "label": "start composed tl containers",
+            "type": "shell",
+            "command": "podman compose --env-file ./envs/testlink-${input:envVariationTL}.env -f docker-compose.yml up -d",
+            "presentation": {
+                "clear": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": {
+                "owner": "docker",
+                "source": "compose",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern": [
+                    {
+                        "regexp": "^.*(docker-compose.yml).*$",
+                        "file": 1,
+                        "kind": "file"
+                    },                
+                    {
+                        "regexp": "^(Warning|Error):\\s+(.*)$",
+                        "severity": 1,
+                        "message": 2
+                    }
+                ]         
+            }
+        },
+        {
+            "label": "stop and remove composed tl containers",
+            "type": "shell",
+            "command": "podman compose --env-file ./envs/testlink-${input:envVariationTL}.env -f docker-compose.yml down -v",
+            "presentation": {
+                "clear": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": {
+                "owner": "docker",
+                "source": "compose",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern": [
+                    {
+                        "regexp": "^.*(docker-compose.yml).*$",
+                        "file": 1,
+                        "kind": "file"
+                    },                
+                    {
+                        "regexp": "^(Warning|Error):\\s+(.*)$",
+                        "severity": 1,
+                        "message": 2
+                    }
+                ]         
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "type": "pickString",
+            "id": "envVariationTL",
+            "description": "Which TL env to use ?",
+            "options": ["1.9.20.fixed", "1.9.19","2.0.0.dev"],
+            "default": "1.9.20_fixed"
+        }
+    ]
+}
