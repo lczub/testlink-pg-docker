@@ -9,8 +9,8 @@ $tlCfg->api->enabled = TRUE;
 
 /** testlink requires SMPT configuration
 	
-    config fake smtp server mailhog 
-	- see docker mailhog/mailhog
+    config fake smtp server mailpit 
+	- see docker mailhog/mailüit
 */
 
 /**
@@ -26,7 +26,7 @@ $g_smtp_host        = 'tl_smtp';  # SMTP server MUST BE configured
  * will depend on the SMTP server configuration and hence others may be used.
  * @global int $g_smtp_port
  */
-$g_smtp_port = 1025;    # default mailhog smtp port                     
+$g_smtp_port = 1025;    # default mailpit smtp port                     
 
 # Configure using custom_config.inc.php
 $g_tl_admin_email     = 'tl_admin@example.com'; # for problem/error notification

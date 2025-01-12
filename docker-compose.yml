@@ -21,11 +21,18 @@ services:
       - tl-pg-volume:/var/lib/postgresql/data
 
   tl_smtp:
-    image:  docker.io/mailhog/mailhog
+    image:  docker.io/axllent/mailpit
     container_name: testlink_smtp_${TL_RELEASE}
     ports:
       - ${TL_SMTP_PORT_MH_SMTP_SERVER}:1025
       - ${TL_SMTP_PORT_MH_HTTP_SERVER}:8025
+    volumes:
+      - tl-data-volume:/data
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
 
   tl_apache:
     depends_on:

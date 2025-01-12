@@ -11,7 +11,7 @@ DO NOT USE THIS CONFIG IN PRODUCTION - DEFAULT USER CREDENTIALS ARE USED
 TestLink will be reachable on [localhost port 8085](http://localhost:8085)
 - test login: _pyTLapi_ + _pyTLapi_
 
-Mailhog checking SMTP on [localhost port 8025](http://localhost:8025/)
+[MailPit](https://hub.docker.com/r/axllent/mailpit) checking SMTP on [localhost port 8025](http://localhost:8025/)
 
 PGadmin checking DB tables [localhost port 8086](http://localhost:8086) 
 - default login: _user@domain.com_ + _SuperSecret_
